@@ -1,0 +1,22 @@
+<div class="card mt-3">
+<div class="card-header">
+  Website Content Form
+</div>
+
+<div class="card-body">
+<form novalidate [formGroup]="nameForm" (ngSubmit)="navigate()" class="p-3">
+<mat-form-field appearance="fill">
+    <mat-label>Enter your provided Id</mat-label>
+    <input matInput type="text"  formControlName="name" >
+    <button *ngIf="nameForm.get('name')?.value" matSuffix mat-icon-button aria-label="Clear" (click)="nameForm.get('name')?.setValue('')">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <div class="d-flex justify-content-center">
+  
+    <button type="submit" class="btn btn-sm btn-danger"> Submit</button>
+
+  </div>
+</form>
+</div>
+</div>

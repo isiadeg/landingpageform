@@ -1,0 +1,22 @@
+<div class="gap"></div>
+<div class="remaining position-relative">
+    <picture>
+        <source [attr.srcset]="data.bigsrc" media="(min-width:1024px)">
+        <img [src]="data.smallsrc" alt="" srcset="">
+    </picture>
+    <div class="explanation w-100 position-absolute bg-secondary start-0 top-0
+    d-flex justify-content-center align-items-center">
+       
+
+    </div>
+    <div class="explanationwords text-light w-80 m-auto position-absolute start-0 top-0
+    d-flex justify-content-center align-items-center">
+        The image you upload will be used on the front page
+         similar to how it's used in the picture below 
+    </div>
+
+
+    <div mat-button class="rounded-circle bg-secondary position-absolute
+    top-0 end-0 rt d-flex justify-content-center align-items-center" (click)="close();">X</div>
+</div>
+

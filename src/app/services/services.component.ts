@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import {MatProgressBarModule, ProgressBarMode} from '@angular/material/progress-bar';
 import * as DecoupledEditor from '../../build/ckeditor';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
@@ -27,6 +27,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { NumberSymbol } from '@angular/common';
+import {MatDialogRef, MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { Console } from 'console';
 
 const storage = getStorage();
 
@@ -37,11 +40,11 @@ const storage = getStorage();
 
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  selector: 'app-services',
+  templateUrl: './services.component.html',
+  styleUrls: ['./services.component.css']
 })
-export class UserComponent implements OnInit {
+export class ServicesComponent implements OnInit {
 
   public Editor = DecoupledEditor;
 
@@ -61,21 +64,23 @@ export class UserComponent implements OnInit {
   progressvalue:{[key:string]:number}={};
   successfulUpload:{[key:string]:boolean} = {};
   landingPageForm: FormGroup = new FormGroup({});
+  show:{[key:string]: any[]}={'deleteDialog': []};
+  activateOverlay:boolean = false;
+  dialogref!:MatDialogRef<any>;
    
 
 
   get sections():FormArray{
-    return<FormArray>this.landingPageForm.get('headerImages');
+    return<FormArray>this.landingPageForm.get('services');
   }
   //eachsection: FormGroup = new FormGroup({});
-  constructor(private fb:FormBuilder) { }
+  constructor(private fb:FormBuilder, private dialog:MatDialog) { }
 
   ngOnInit(): void {
     this.landingPageForm = this.fb.group({
-      businessName : '',
-      logoUrl: '',
-      headerImages: this.fb.array([this.createFormgroup(['headerImage'])])
+      services: this.fb.array([this.createFormgroup(['serviceTitle','serviceImageUrl', 'serviceDescription', 'servicePrice'])])
     })
+    console.log(this.sections.value)
   }
 
   eachsection():FormGroup{
@@ -89,13 +94,29 @@ export class UserComponent implements OnInit {
   createFormgroup(name:any[]){
       let dummygroup = this.fb.group({});
       name.forEach(e=>{
-
-        dummygroup.addControl(e, new FormControl());
+        if(e === "serviceImageUrl"){
+          dummygroup.addControl(e, new FormArray([this.createFormgroup(['eachimage'])]))
+        }   else{
+        console.log(e);
+        dummygroup.addControl(e, new FormControl());}
       })
+      return dummygroup;
+      console.log(dummygroup);
       
   }
 
+  addServices(){
+    this.sections.push(this.createFormgroup(['serviceTitle','serviceImageUrl', 'serviceDescription', 'servicePrice']))
+  }
+get eachimage():FormArray{
 
+  return<FormArray>this.sections.controls[0].get('serviceImageUrl');
+}
+
+geteachimage(i:number):FormArray{
+
+  return<FormArray>this.sections.controls[i].get('serviceImageUrl');
+}
   upload(id:string, multipleornot:string, c:AbstractControl,
     whichprogress:string, controlname:string, d?:FormArray ){
     this.progressbar[whichprogress] = true;
@@ -151,7 +172,7 @@ uploadTask.on('state_changed',
     this.successfulUpload[whichprogress] = true;
     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
       console.log('File available at', downloadURL);
-      if(multipleornot != "multple"){
+      if(multipleornot != "multiple"){
        // whichone.push(downloadURL)
         this.landingPageForm!.get(controlname)!.setValue(downloadURL);
       }else{
@@ -164,8 +185,8 @@ uploadTask.on('state_changed',
           toadd!.get(controlname)!.setValue(downloadURL);
 
           d!.push(toadd);
-          console.log(toadd);
-          console.log(d!);
+          
+          console.log(this.landingPageForm.value);
          // console.log(whichone);
         }
       }
@@ -182,10 +203,64 @@ uploadTask.on('state_changed',
 }
 }
 
-onChange( { editor }: ChangeEvent ) {
+onChange( { editor }: ChangeEvent, i:number ) {
   const data = editor.getData();
 
   console.log( data );
+  this.sections.controls[i]!.get('serviceDescription')!.setValue(data);
+
+}
+
+delete(d:FormArray, i:number, whatToHide:string, controlname:string){
+  if(d!.controls.length === 1){
+    d!.controls[0]!.get(controlname)!.setValue(null);
+  }else{
+ d.removeAt(i);}
+ this.hide(whatToHide, i);
+ console.log(this.landingPageForm.value)
+}
+
+deleteService(d:FormArray, i:number, whatToHide:string){
+  if(d!.controls.length === 1){
+    d!.controls[0]!.get('serviceTitle')!.setValue(null);
+    d!.controls[0]!.get('serviceImageUrl')!.setValue(null);
+    d!.controls[0]!.get('serviceDescription')!.setValue(null);
+    d!.controls[0]!.get('servicePrice')!.setValue(null);
+  }else{
+ d.removeAt(i);}
+ this.hide(whatToHide, i);
+ console.log(this.landingPageForm.value.headerImages)
+}
+
+reveal(ele:string, i:number){
+
+    this.show[ele]= [];
+    this.show[ele][i] = true;
+
+    console.log(this.show);
+    this.activateOverlay = true;
+}
+hide(ele:string, i:number){
+  this.show[ele][i] = false;
+  this.activateOverlay = false;
+}
+opendialog(){
+    this.dialogref= this.dialog.open(ServiceDialogComp, {data:{
+      bigsrc: "https://firebasestorage.googleapis.com/v0/b/functions-landingpage.appspot.com/o/images%2Ffunctionscollege.web.app_(big%20laptop)%20(2).png?alt=media&token=0961e02a-682a-41c5-a2fa-0225af1ea92f",
+      smallsrc: "https://firebasestorage.googleapis.com/v0/b/functions-landingpage.appspot.com/o/images%2Ffunctionscollege.web.app_(iPhone%20SE)%20(1).png?alt=media&token=9dfccdd4-cf7b-4d01-bb5e-0f94c7db193b",
+    }})
 }
 
 }
+
+@Component({
+  templateUrl: '../servicedialog/servicedialog.component.html',
+  styleUrls:['../servicedialog/servicedialog.component.css']
+})
+export class ServiceDialogComp{
+  constructor(@Inject (MAT_DIALOG_DATA) public data: {bigsrc:string, smallsrc:string} , 
+  private dialog:MatDialogRef<{[key:string]:string}>){}
+  close(){
+    this.dialog.close('hi');
+  }
+} 

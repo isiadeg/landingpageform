@@ -1,42 +1,7 @@
-<div class="card">
-  <div class="card-header">
-    Web Content Form
-  </div>
-  <div class="card-body" >
-    <form novalidate [formGroup]="landingPageForm">
-    <div class="p-2" novalidate>
-          <label for="upload" class="form-label">Upload Your Pictures</label>
-    <input type="file" multiple id="uploadinput">
 
-    <button class="btn btn-sm d-block btn-danger mb-3"
-    (click)="upload()">
-      Upload
-    </button>
-
-    <mat-progress-bar [mode]="progressmode" value="{{progressvalue}}" 
-    *ngIf="progressbar"></mat-progress-bar>
-    <div class="alert alert-success" *ngIf="successfulUpload">
-      Your Upload(s) is/are Successfull
-    </div>
-  </div>
-  <div>
-    <ckeditor [editor]="Editor" (change)="onChange($event)" data="<p>Hello, world!</p>" (ready)="onReady($event)"></ckeditor>
-  </div>
-  <div class="formaray" formArrayName="sections">
-   
-        <div class="sectionformgroup" *ngFor = "let eacharray of sections.controls; 
-        let i = index;" [formGroupName] = "i">
-              <mat-form-field appearance="fill">
-                <mat-label>Title</mat-label>
-                <input matInput type="text" id="{{'sectionTitle' + i}}" formControlName="sectionTitle">
-              </mat-form-field>
-        </div>
-  
-  
-  
-
-  </div>
-</form>
-
-  </div>
+  <div class="my-4 m-lg-5">
+  <app-header ></app-header>
+</div>
+<div class="my-4 m-lg-5">
+  <app-services ></app-services>
 </div>

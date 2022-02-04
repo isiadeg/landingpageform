@@ -1,0 +1,44 @@
+<div class="card w-lg-60 my-4">
+    <div class="card-header">
+        Sign In
+    </div>
+    <div class="card-body">
+        <form [formGroup]="loginForm"
+        (ngSubmit)="signIn();">
+    
+        <div class="eachinput mb-2">
+            <label for="email" class="form-label">
+                Email
+            </label>
+            <input type="text" class="form-control" 
+            formControlName="email"  id="email">
+        </div>
+        <div class="eachinput mb-2">
+            <label for="password" class="form-label">
+                Password
+            </label>
+            <input type="password" class="form-control" id="password"
+            formControlName="password">
+        </div>
+        <input type="submit" value="Sign In" class="btn btn-danger text-light mb-3">
+        <div class="d-flex justify-content-end align-items-center pe-5 text-danger">
+            <div class="me-3">
+                Not yet Registered? 
+            </div>
+            <div>
+                <a href="" [routerLink] = "['/register']"> Register Now</a>
+            </div>
+        </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </form>
+    </div>
+</div>

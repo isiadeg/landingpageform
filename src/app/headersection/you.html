@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+.fawas{
+background-color: wheat;
+border: 5px dashed black;
+width: 100vw;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+height: 100vh;
+gap: 20px;
+}
+.damilola{
+    background-color: black;
+    color: wheat;
+    
+    transition: ease-in-out 5s ;
+
+}
+h1{
+
+    margin: 0px;
+    padding: 0px;
+}
+.opeyemi{
+
+    
+}
+.damola{
+    width: 170px;
+    height: 40px;
+    background-color: black;
+    color:wheat;
+    justify-content: center;
+align-items: center;
+display: flex;flex-direction: column;
+
+}
+@keyframes ade{
+from{margin-left:-150vw;}
+
+to{margin-left: 0px;}
+
+
+}
+@keyframes toi{
+from{margin-right:-150vw;}
+
+to{margin-right: 0px;}
+
+
+}
+
+
+    </style>
+    <script>
+      
+function row(){
+     document.getElementById('ku').style.backgroundColor = 'red';
+    //alert(hd);
+}  
+     function toy(){
+         document.getElementById('ku').style.color='yellow';
+         alert('you re welcome');
+     }
+
+function boy(){
+  let how=   document.getElementById('how');
+  how.style.backgroundColor='gold';
+  how.style.color="green"
+  how.style.border="4px dashed black"
+  how.style.borderRadius="50%"
+  how.style.padding="20px"
+  how.style.margin="20px";
+  how.style.animation ="boy 5s infinite";
+  how.style.transition=" 5s ease-in-out";
+}
+ function bag() {
+  let mat= document.getElementById("mat");
+  mat.style.animation ="boy 5s"
+ }   
+    </script>
+    <style>
+    @keyframes boy{
+        from{margin-left:100vw;
+        transform:skew(0deg);}
+        to{margin-left:0px;
+        transform:skew(60deg);}
+    }
+</style>
+</head>
+<body>
+    
+
+    <div  class="fawas"> <div class="damilola" onmouseenter="boy();"id ="how"><h1>Arabic and islamic class</h1></div>
+     <div class="opeyemi">A class
+         where your children will understand arabic and islamic, 
+         and the moral of islam, and how to live with different people with different behaviours. </div>
+          <div class="damola" onmouseleave="row();" id="ku">Register now!!!</div></div>
+<div class="school" onclick="bag();" id="mat"> adekunle adewale omoobalola </div>
+          
+</html>

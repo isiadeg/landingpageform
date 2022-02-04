@@ -10,6 +10,12 @@ import { UserComponent } from './user/user.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { UsersComponent } from './users/users.component';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
+import { HeadersectionComponent } from './headersection/headersection.component';
+import { DialogComponent } from './dialog/dialog.component';
+import { ServicesComponent } from './services/services.component';
+import { ServicedialogComponent } from './servicedialog/servicedialog.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 
 @NgModule({
@@ -17,7 +23,13 @@ import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
     AppComponent,
     UserComponent,
     PagenotfoundComponent,
-    UsersComponent
+    UsersComponent,
+    HeadersectionComponent,
+    DialogComponent,
+    ServicesComponent,
+    ServicedialogComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

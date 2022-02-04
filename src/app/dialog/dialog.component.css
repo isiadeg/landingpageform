@@ -1,0 +1,19 @@
+.gap{
+    height:70px;
+}
+.remaining{
+overflow: auto;
+
+}
+.remaining img{
+    max-height: 100%;
+    max-width:100%;
+}
+.rt{
+    
+    height:30px; width:30px;
+    cursor: pointer; color: red !important;
+}
+.explanation, .explanationwords{
+    height: 60px;
+}

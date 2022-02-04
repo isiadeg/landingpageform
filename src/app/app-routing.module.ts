@@ -2,16 +2,22 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {UserComponent} from './user/user.component';
 import {PagenotfoundComponent} from './pagenotfound/pagenotfound.component';
-import {UsersComponent} from './users/users.component'
+import {UsersComponent} from './users/users.component';
+import {LoginComponent} from './login/login.component';
+import {RegisterComponent} from './register/register.component';
+import {LoginGuard} from './login.guard';
 
 const routes: Routes = [{
-  path: 'user/:id', component: UserComponent,
+  path: 'user/:id', component: UserComponent, canActivate:[LoginGuard]
 },
 {
-  path: 'users', component: UsersComponent
+  path: 'login', component: LoginComponent
 },
 {
-  path: "", redirectTo: "users", pathMatch: "full"
+  path :'register', component:RegisterComponent
+},
+{
+  path: "", redirectTo: "login", pathMatch: "full"
 },
 {
   path: "**", component: PagenotfoundComponent

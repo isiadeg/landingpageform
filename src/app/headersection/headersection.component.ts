@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import {MatProgressBarModule, ProgressBarMode} from '@angular/material/progress-bar';
 import * as DecoupledEditor from '../../build/ckeditor';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
@@ -27,6 +27,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { NumberSymbol } from '@angular/common';
+import {MatDialogRef, MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 const storage = getStorage();
 
@@ -37,11 +39,11 @@ const storage = getStorage();
 
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  selector: 'app-header',
+  templateUrl: './headersection.component.html',
+  styleUrls: ['./headersection.component.css']
 })
-export class UserComponent implements OnInit {
+export class HeadersectionComponent implements OnInit {
 
   public Editor = DecoupledEditor;
 
@@ -61,6 +63,9 @@ export class UserComponent implements OnInit {
   progressvalue:{[key:string]:number}={};
   successfulUpload:{[key:string]:boolean} = {};
   landingPageForm: FormGroup = new FormGroup({});
+  show:{[key:string]: any[]}={'deleteDialog': []};
+  activateOverlay:boolean = false;
+  dialogref!:MatDialogRef<any>;
    
 
 
@@ -68,7 +73,7 @@ export class UserComponent implements OnInit {
     return<FormArray>this.landingPageForm.get('headerImages');
   }
   //eachsection: FormGroup = new FormGroup({});
-  constructor(private fb:FormBuilder) { }
+  constructor(private fb:FormBuilder, private dialog:MatDialog) { }
 
   ngOnInit(): void {
     this.landingPageForm = this.fb.group({
@@ -92,6 +97,7 @@ export class UserComponent implements OnInit {
 
         dummygroup.addControl(e, new FormControl());
       })
+      return dummygroup;
       
   }
 
@@ -151,7 +157,7 @@ uploadTask.on('state_changed',
     this.successfulUpload[whichprogress] = true;
     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
       console.log('File available at', downloadURL);
-      if(multipleornot != "multple"){
+      if(multipleornot != "multiple"){
        // whichone.push(downloadURL)
         this.landingPageForm!.get(controlname)!.setValue(downloadURL);
       }else{
@@ -164,8 +170,8 @@ uploadTask.on('state_changed',
           toadd!.get(controlname)!.setValue(downloadURL);
 
           d!.push(toadd);
-          console.log(toadd);
-          console.log(d!);
+          
+          console.log(this.landingPageForm);
          // console.log(whichone);
         }
       }
@@ -188,4 +194,43 @@ onChange( { editor }: ChangeEvent ) {
   console.log( data );
 }
 
+delete(d:FormArray, i:number, whatToHide:string, controlname:string){
+  if(d!.controls.length === 1){
+    d!.controls[0]!.get(controlname)!.setValue(null);
+  }else{
+ d.removeAt(i);}
+ this.hide(whatToHide, i);
+ console.log(this.landingPageForm.value.headerImages)
 }
+reveal(ele:string, i:number){
+
+    this.show[ele]= [];
+    this.show[ele][i] = true;
+
+    console.log(this.show);
+    this.activateOverlay = true;
+}
+hide(ele:string, i:number){
+  this.show[ele][i] = false;
+  this.activateOverlay = false;
+}
+opendialog(){
+    this.dialogref= this.dialog.open(DialogComp, {data:{
+      bigsrc: "https://firebasestorage.googleapis.com/v0/b/functions-landingpage.appspot.com/o/images%2Ffunctionscollege.web.app_(big%20laptop)%20(2).png?alt=media&token=0961e02a-682a-41c5-a2fa-0225af1ea92f",
+      smallsrc: "https://firebasestorage.googleapis.com/v0/b/functions-landingpage.appspot.com/o/images%2Ffunctionscollege.web.app_(iPhone%20SE)%20(1).png?alt=media&token=9dfccdd4-cf7b-4d01-bb5e-0f94c7db193b",
+    }})
+}
+
+}
+
+@Component({
+  templateUrl: '../dialog/dialog.component.html',
+  styleUrls:['../dialog/dialog.component.css']
+})
+export class DialogComp{
+  constructor(@Inject (MAT_DIALOG_DATA) public data: {bigsrc:string, smallsrc:string} , 
+  private dialog:MatDialogRef<{[key:string]:string}>){}
+  close(){
+    this.dialog.close('hi');
+  }
+} 

@@ -1,0 +1,62 @@
+.eachinput{
+    width:100%;
+    box-sizing:border-box;
+    background-color: black;
+    color:white;
+    padding-right: 20px;
+}
+.alaye{
+  display: block;
+  color:white;
+  font-size: 12px;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+label{
+    font-size:1.3em;
+    
+}
+.rounded-circle, .smallimage{
+    background-color:black; box-shadow: 0px 0px 10px 2px rgb(40,40,40);
+}
+.tr{
+    top:-10px; right:-10px;
+}
+.bl{
+    bottom:0px; left:0px;
+}
+.smallimage{
+    width: 100%;
+}
+.rounded-circle{
+    width:25px; height:25px;
+}
+label{
+    color: pink;
+}
+.deleteDialog{
+    z-index: 1000000000000000000;
+    top:0px; left:0px; width:100%; height: 100%;
+    box-sizing: border-box;
+}
+.overlayi{
+    z-index: 1000000000;
+    background-color: black;
+    opacity:0.3;
+    top:0px; left:0px; width:100%; height: 100%;
+    box-sizing: border-box; 
+}
+.eachinput a:hover~.visit{
+    display: block !important;
+}
+.gp{
+    gap:15px;
+}
+.mat-expansion-panel-body{
+    padding: 15px;
+}
+@media only screen and (min-width:1024px){
+    .card{
+        width:85%;
+        margin: auto;
+    }
+}

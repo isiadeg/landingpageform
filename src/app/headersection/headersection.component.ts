@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import {MatProgressBarModule, ProgressBarMode} from '@angular/material/progress-bar';
 import * as DecoupledEditor from '../../build/ckeditor';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
@@ -66,6 +66,7 @@ export class HeadersectionComponent implements OnInit {
   show:{[key:string]: any[]}={'deleteDialog': []};
   activateOverlay:boolean = false;
   dialogref!:MatDialogRef<any>;
+  @Input() expand = false;
    
 
 

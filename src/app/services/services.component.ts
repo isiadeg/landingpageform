@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import {MatProgressBarModule, ProgressBarMode} from '@angular/material/progress-bar';
 import * as DecoupledEditor from '../../build/ckeditor';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
@@ -47,7 +47,7 @@ const storage = getStorage();
 export class ServicesComponent implements OnInit {
 
   public Editor = DecoupledEditor;
-
+  @Input() expand = false;
   public onReady( editor:any ) {
       editor.ui.getEditableElement().parentElement.insertBefore(
           editor.ui.view.toolbar.element,

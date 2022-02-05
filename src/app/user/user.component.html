@@ -1,7 +1,63 @@
+<!--
+  <div class="header position-fixed top-0 start-0 bg-secondary text-danger">
+  <div class="logo">
 
-  <div class="my-4 m-lg-5">
-  <app-header ></app-header>
+  </div>
+  <div class="menu">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+
 </div>
-<div class="my-4 m-lg-5">
-  <app-services ></app-services>
-</div>
+ 
+ 
+ 
+
+-->
+
+<mat-sidenav-container mode="over" hasBackdrop = "false">
+  <mat-sidenav #sidenav class="start-0 position-fixed top-0 sidenav">
+    <i class="fas fa-times position-absolute close " (click)="sidenav.close()"></i>
+    <ul >
+      <li (click)="expanded('header')">
+        Header Form
+      </li>
+      <li (click)="expanded('services')">
+        Services Form
+      </li>
+      <li (click)="expanded('why Us')">
+        Why Us Form
+      </li>
+  
+      
+    </ul>
+  </mat-sidenav>
+  <mat-sidenav-content class="pt-5" >
+    
+<mat-toolbar class="position-fixed top-0 start-0 w-100 bg-secondary ps-2 d-flex
+justify-content-between">
+  
+
+  <div class="menu d-flex flex-column" (click)="sidenav.open()">
+    <div class="bar "></div>
+    <div class="bar "></div>
+    <div class="bar "></div>
+  </div>
+  
+  <div class="btn btn-danger text-light logout" (click)="logout()"> 
+    Log Out
+  </div>
+  </mat-toolbar>
+  <div (click)="sidenav.close()">
+       <div class="my-4 m-lg-5">
+      <app-header [expand] = "trueorfalse.header" ></app-header>
+    </div>
+    <div class="my-4 m-lg-5">
+      <app-services  [expand] = "trueorfalse.services" ></app-services>
+    </div>
+  </div>
+ 
+    
+  </mat-sidenav-content>
+</mat-sidenav-container>

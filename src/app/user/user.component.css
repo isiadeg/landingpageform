@@ -8,3 +8,32 @@ form{
     background-color: black;
     color:white;
 }
+.bar{
+    width:25px;
+    background-color: pink;
+}
+.menu{
+    gap:4px;
+    flex-direction: column;
+}
+.bar{
+    padding:2px;
+}
+mat-sidenav{
+    width: 250px; padding-top: 70px;
+}
+ul{
+    list-style-type: none;
+}
+li{
+    margin-bottom:20px;
+}
+mat-toolbar{
+    z-index: 100000000000;
+}
+.close{
+    top:20px; right:10px;
+}
+.menu, li, .logout{
+    cursor: pointer;
+}

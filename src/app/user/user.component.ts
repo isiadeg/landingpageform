@@ -4,6 +4,7 @@ import * as DecoupledEditor from '../../build/ckeditor';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import { MyUploadAdapter } from '../uploader';
 import {FormBuilder, FormGroup, FormArray, FormControl, AbstractControl} from '@angular/forms'
+import { LoginService } from '../login.service';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -63,12 +64,18 @@ export class UserComponent implements OnInit {
   landingPageForm: FormGroup = new FormGroup({});
    
 
+  trueorfalse:{[key:string]:boolean} ={
+    header:false,
+    services:false
+  } 
+
+  
 
   get sections():FormArray{
     return<FormArray>this.landingPageForm.get('headerImages');
   }
   //eachsection: FormGroup = new FormGroup({});
-  constructor(private fb:FormBuilder) { }
+  constructor(private fb:FormBuilder, private loginService:LoginService) { }
 
   ngOnInit(): void {
     this.landingPageForm = this.fb.group({
@@ -85,7 +92,6 @@ export class UserComponent implements OnInit {
     
     })
   }
-
   createFormgroup(name:any[]){
       let dummygroup = this.fb.group({});
       name.forEach(e=>{
@@ -186,6 +192,21 @@ onChange( { editor }: ChangeEvent ) {
   const data = editor.getData();
 
   console.log( data );
+}
+expanded(what:string){
+  
+  for(let water in this.trueorfalse){
+    this.trueorfalse[water]= false;
+    
+  }
+  this.trueorfalse[what]= true;
+
+  console.log(this.trueorfalse)
+
+}
+
+logout(){
+  this.loginService.logout();
 }
 
 }

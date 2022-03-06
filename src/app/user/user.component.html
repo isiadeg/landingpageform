@@ -26,7 +26,7 @@
       <li (click)="expanded('services')">
         Services Form
       </li>
-      <li (click)="expanded('why Us')">
+      <li (click)="expanded('whyus')">
         Why Us Form
       </li>
   
@@ -51,13 +51,46 @@ justify-content-between">
   </mat-toolbar>
   <div (click)="sidenav.close()">
        <div class="my-4 m-lg-5">
-      <app-header [expand] = "trueorfalse.header" ></app-header>
+      <app-header [expand] = "trueorfalse.header" [data]="data?.header" ></app-header>
     </div>
     <div class="my-4 m-lg-5">
-      <app-services  [expand] = "trueorfalse.services" ></app-services>
+      <app-services  [expand] = "trueorfalse.services"
+      [data] = "data?.services" ></app-services>
+    </div>
+    <div class="my-4 m-lg-5">
+      <app-whyus  [expand] = "trueorfalse.whyus"
+      [data]="data?.whyus" ></app-whyus>
     </div>
   </div>
  
     
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<div class="zindext position-fixed bottom-0 start-0 w-80 w-lg-25" 
+*ngIf="lastsavedforeachi['whyus'] || lastsavedforeachi['services'] || lastsavedforeachi['header']">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header class="pb-1"
+    >
+      <mat-panel-title>
+        {{lastsaved > 59?'Last Saved - '+rounddown(lastsaved/60)+"mins ago":'Last Saved - '+lastsaved+"s ago"}}
+      </mat-panel-title>
+      <mat-panel-description>
+        The Last Time Your Data Was Saved
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div></div>
+    <div class="fd  d-flex p-3 justify-content-between 
+    border-bottom border-secondary align-items-center"
+    *ngFor="let form of forms">
+    
+      <div class="lastsaved" >
+        {{'Last Saved ('+form.name+') '}}
+      </div>
+      <div class="secondsago" *ngIf="lastsavedforeachi[form.name]">
+        {{lastsavedforeach[form.name] > 59?rounddown(lastsavedforeach[form.name]/60)+"mins ago":lastsavedforeach[form.name]+"s ago"}}
+      </div>
+    
+    </div>
+  </mat-expansion-panel>
+</div>

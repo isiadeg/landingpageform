@@ -1,1 +1,75 @@
-<p>register works!</p>
+<div class="card w-lg-50 my-4">
+    <div class="card-header">
+        Sign Up
+    </div>
+    <div class="card-body">
+        <form [formGroup]="registerForm"
+        (ngSubmit)="register();">
+    
+        <div class="eachinput mb-2">
+            <label for="email" class="form-label">
+                Email
+            </label>
+            <input type="text" [ngClass]="{'form-control':true,
+        'border-danger':errors.email?.length}"
+            formControlName="email"  id="email">
+            <div class="text-danger my-2"
+            *ngIf="errors.email?.length">
+            <div *ngFor="let error of errors.email">
+                {{error}}
+            </div>
+        </div>
+        </div>
+        <div class="eachinput mb-2">
+            <label for="password" class="form-label">
+                Password
+            </label>
+            <input [attr.type]="showornot?'text':'password'" class="form-control w-80" id="password"
+            formControlName="password"> 
+            <span class="showornot text-info mt-2" (click)="toggleShow();">
+                {{showornot?'Hide Password':'Show Password'}}
+            </span>
+            
+        </div>
+        <input type="submit" value="Sign Up" class="btn btn-danger text-light mb-3"
+        [ngClass]="{
+            'opacity-25':!registerForm.valid
+        }">
+        <div class="d-flex justify-content-end align-items-center pe-5 text-danger">
+            <div class="me-3">
+                Registered Already? 
+            </div>
+            <div>
+                <a href="" [routerLink] = "['/login']"> Log In</a>
+            </div>
+        </div>
+
+        <div class="overlay position-fixed top-0 start-0 bg-secondary opacity-25 w-100 h-100"
+        *ngIf="overlay" >
+
+        </div>
+        
+        <div class=" position-fixed top-0 start-0 w-100 h-100
+        justify-content-center align-items-center d-flex"
+        *ngIf="errordiv">
+            <div class=" message w-50 position-relative bg-light text-danger position-relative pt-5">
+                <div>                Please, Fill all Required fields correctly </div>
+                <div class="position-absolute top-0 end-50 text-danger" (click)="closesubmiterror()">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+
+            
+        </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </form>
+    </div>
+</div>

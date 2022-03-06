@@ -37,3 +37,25 @@ mat-toolbar{
 .menu, li, .logout{
     cursor: pointer;
 }
+.zindext{
+    z-index:222222222222222;
+    background-color: white;
+    
+}
+mat-expansion-panel{
+    
+    padding-top: 10px;
+}
+.mat-expansion-panel-header{
+    height: auto !important;
+}
+.fd{
+}
+@media only screen and (min-width:1200px){
+    .fd{
+        flex-direction: row;
+    }
+    .zindext{
+        
+    }
+}

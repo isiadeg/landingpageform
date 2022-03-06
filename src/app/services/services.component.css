@@ -54,6 +54,19 @@ label{
 .mat-expansion-panel-body{
     padding: 15px;
 }
+.zindex{
+    z-index:22222222222222222;
+    }
+.insidezindex{
+    box-shadow: 2px 2px 7px 3px rgb(40,40,40);
+
+}
+.mat-expansion-panel-header{
+    height: auto !important;
+}
+.hint{
+    overflow:auto;
+}
 @media only screen and (min-width:1024px){
     .card{
         width:85%;

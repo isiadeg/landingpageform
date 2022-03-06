@@ -43,11 +43,11 @@ const db = getDatabase();
 
 
 @Component({
-  selector: 'app-services',
-  templateUrl: './services.component.html',
-  styleUrls: ['./services.component.css']
+  selector: 'app-whyus',
+  templateUrl: './whyus.component.html',
+  styleUrls: ['./whyus.component.css']
 })
-export class ServicesComponent implements OnInit {
+export class WhyusComponent implements OnInit {
 
   public Editor = DecoupledEditor;
   @Input() expand = false;
@@ -102,7 +102,7 @@ export class ServicesComponent implements OnInit {
   this.progressvalue['headerImages']=[0];
   this.successfulUpload['headerImages']=[false];
     this.landingPageForm = this.fb.group({
-      services: this.fb.array([this.createFormgroup(['serviceTitle','serviceImageUrl', 'serviceDescription', 'servicePrice'])])
+      services: this.fb.array([this.createFormgroup(['serviceTitle','serviceImageUrl', 'serviceDescription'])])
     })
     console.log(this.sections.value)
     if(this.data){
@@ -204,7 +204,7 @@ this.landingPageForm.updateValueAndValidity();
     console.log(this.landingPageForm.value);
   
   this.landingPageForm.valueChanges.pipe(debounceTime(4000)).subscribe((e:any)=>{
-    set(ref2(db,'users/'+this.loginservice.user+"/"+'services'), {
+    set(ref2(db,'users/'+this.loginservice.user+"/"+'whyus'), {
       ...this.landingPageForm.value
     }).then(()=>{
       console.log("data has been saved")
@@ -261,14 +261,18 @@ geteachimage(i:number):FormArray{
     let files = document.getElementById(id)!.
     getElementsByTagName('input')[0]!.files || undefined;
     if(files){
+      console.log(files.length);
     for(let i = 0; i<files.length; i++){
       let file = files[i];
+      console.log(i);
+      console.log(file.name);
     const storageRef = ref(storage, 'images/' + file.name);
 const uploadTask = uploadBytesResumable(storageRef, file);
 
 // Listen for state changes, errors, and completion of the upload.
 uploadTask.on('state_changed',
   (snapshot) => {
+    console.log("changed");
     this.progressmode[whichprogress][parseInt(id[id.length-1])] = "determinate";
     // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -385,12 +389,12 @@ hide(ele:string, i:number, parent:number){
 save(){
   console.log(this.landingPageForm.value);
   console.log({...this.landingPageForm.value});
-  set(ref2(db,'users/'+this.loginservice.user+"/"+'services'), {
+  set(ref2(db,'users/'+this.loginservice.user+"/"+'whyus'), {
     ...this.landingPageForm.value, 
 
   }).then(()=>{
     this.activateOverlay = true;
-    this.alertMessage = "Your Services/Product Information has been saved Successfully"
+    this.alertMessage = "Your Points have been saved Successfully"
     this.typeOfMessage = "success";
     console.log("data has been saved")
   }).catch(e=>{

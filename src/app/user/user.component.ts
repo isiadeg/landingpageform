@@ -28,8 +28,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import {getDatabase, ref as ref2, set, onValue, get} from 'firebase/database';
+import { getAuth } from 'firebase/auth';
+import { ActivatedRoute } from '@angular/router';
+
 
 const storage = getStorage();
+const db=getDatabase();
+const auth = getAuth()
+
+
 
 // Create the file metadata
 
@@ -66,16 +74,69 @@ export class UserComponent implements OnInit {
 
   trueorfalse:{[key:string]:boolean} ={
     header:false,
-    services:false
+    services:false,
+    whyus:false
   } 
+  lastsaved:any= "";
+  forms:any[]=[
+    {name:'header', lastsaved:''},
+    {name: 'services', lastsaved:''},
+    {name: 'whyus', lastsaved:''}
 
-  
+  ]
+  lastsavedforeach:any = {}
+  lastsavedforeachi:any = {}
+  changedval:any = {}
+  data!:any
 
   get sections():FormArray{
     return<FormArray>this.landingPageForm.get('headerImages');
   }
   //eachsection: FormGroup = new FormGroup({});
-  constructor(private fb:FormBuilder, private loginService:LoginService) { }
+  constructor(private fb:FormBuilder, private loginService:LoginService, 
+    private route: ActivatedRoute) { 
+    
+
+let ref1 = ref2(db, "users/"+this.loginService.user+"/header" ); 
+let reftwo = ref2(db, "users/"+this.loginService.user+"/services" );
+let refthree = ref2(db, "users/"+this.loginService.user+"/whyus")
+
+    onValue((ref1), (snapshot)=>{
+      if(this.changedval['header']){ 
+      
+      this.lastsavedforeachi['header'] = new Date().getTime();
+      this.lastsaved = 0;
+      console.log(snapshot.val());}else{
+        this.changedval['header'] = snapshot.val();
+        console.log(this.changedval['header']);
+      }
+
+    })
+    onValue((reftwo), (snapshot)=>{
+      if(this.changedval['services']){ 
+      console.log(snapshot.val())
+      this.lastsavedforeachi['services'] = new Date().getTime();
+      this.lastsaved = 0;
+      console.log(snapshot.val);
+    }else{
+      this.changedval['services'] = snapshot.val()
+    }
+
+
+    })
+    
+    onValue((refthree), (snapshot)=>{
+      if(this.changedval['whyus']){ 
+      console.log(snapshot.val())
+      this.lastsavedforeachi['whyus'] = new Date().getTime();
+      this.lastsaved = 0;
+      //console.log(snapshot.val);
+      }else{
+      this.changedval['whyus'] = snapshot.val()
+      }
+
+    })
+  }
 
   ngOnInit(): void {
     this.landingPageForm = this.fb.group({
@@ -83,6 +144,44 @@ export class UserComponent implements OnInit {
       logoUrl: '',
       headerImages: this.fb.array([this.createFormgroup(['headerImage'])])
     })
+
+    let data = this.route.snapshot.data['forms'];
+    console.log(data);
+    if(data == null){
+
+    }
+    else if(data.Error){
+      alert("An error occured, Check Your Network Connection")
+    }else{
+      this.data = data;
+      console.log(this.data);
+    }
+
+    setInterval(()=>{
+      if(this.lastsavedforeachi['header']){
+      this.lastsavedforeach['header'] = Math.round((new Date().getTime() - this.lastsavedforeachi['header'])/1000)
+      console.log(new Date().getTime());
+      console.log(this.lastsavedforeach['header'])
+      this.lastsaved = this.lastsavedforeach['header'];
+    }}, 1000)
+
+    setInterval(()=>{
+
+      if(this.lastsavedforeachi['services']){
+      this.lastsavedforeach['services'] = Math.round((new Date().getTime() - this.lastsavedforeachi['services'])/1000)
+      //console.log(new Date().getTime());
+      //console.log(this.lastsavedforeach['header'])
+      this.lastsaved = this.lastsavedforeach['services'];
+    }}, 1000)
+
+    
+    setInterval(()=>{
+      if(this.lastsavedforeachi['whyus']){
+      this.lastsavedforeach['whyus'] = Math.round((new Date().getTime() - this.lastsavedforeachi['whyus'])/1000)
+      //console.log(new Date().getTime());
+      //console.log(this.lastsavedforeach['header'])
+      this.lastsaved = this.lastsavedforeach['whyus'];
+    }}, 1000)
   }
 
   eachsection():FormGroup{
@@ -207,6 +306,10 @@ expanded(what:string){
 
 logout(){
   this.loginService.logout();
+
+}
+rounddown(number:number):number{
+  return Math.floor(number);
 }
 
 }

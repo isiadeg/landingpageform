@@ -1,5 +1,5 @@
 <mat-expansion-panel class="py-3" [expanded]="expand">
-    <mat-expansion-panel-header >
+    <mat-expansion-panel-header class="pt-1 pb-2">
       <mat-panel-title>
         Goods and Services
       </mat-panel-title>
@@ -12,12 +12,12 @@
         Services/Products Form
       </div>
       <div class="card-body" >
-        <form novalidate [formGroup]="landingPageForm">
+        <form novalidate [formGroup]="landingPageForm" >
           <div formArrayName="services">
 
             <mat-expansion-panel *ngFor="let eachservice of sections.controls;
             let i = index;" class="mb-5 mx-lg-3"> 
-            <mat-expansion-panel-header class="py-5">
+            <mat-expansion-panel-header class="py-3">
               <mat-panel-title>
                 {{'Product '+(i+1)}}
               </mat-panel-title>
@@ -46,7 +46,7 @@
         <div class="eachinput my-3" id="{{'serviceImageUrl'+i}}">
                 <div class="p-2" novalidate>
                     <label for="upload" class="form-label my-3">
-                      Upload Images of The Product/Service
+                      {{landingPageForm.value.services[i].serviceTitle?'Upload Images of The Product/Service for "'+landingPageForm.value.services[i].serviceTitle+'"':'Upload Images of The Product/Service'}}
                     </label>
                     <span class="alaye my-2">
                       Upload images of the product OR
@@ -61,26 +61,27 @@
                     <input type="file" multiple id="uploadinput" class="my-2">
       
                     <button class="btn btn-sm d-block btn-danger mb-3"
-                    (click)="upload('serviceImageUrl'+i, 'multiple', eachimage.controls[0].get('eachimage')!,
+                    (click)="upload('serviceImageUrl'+i, 'multiple', geteachimage(i).controls[0].get('eachimage')!,
                     'headerImages', 'eachimage', geteachimage(i))">
 
   
                     Upload
                     </button>
       
-                    <mat-progress-bar [mode]="progressmode['headerImages']" value="{{progressvalue['headerImages']}}" 
-                    *ngIf="progressbar['headerImages']"></mat-progress-bar>
-                    <div class="alert alert-success" *ngIf="successfulUpload['headerImages']">
+                    <mat-progress-bar [mode]="progressmode['headerImages'][i]" value="{{progressvalue['headerImages'][i]}}" 
+                    *ngIf="progressbar['headerImages'][i]"></mat-progress-bar>
+                    <div class="alert alert-success" *ngIf="successfulUpload['headerImages'][i]">
                     Your Upload(s) is/are Successfull
                     </div>
                     <div class="smallimage overflow-auto d-flex " *ngIf="
-                    sections.controls[i].value!.serviceImageUrl[0].eachimage ">
+                    landingPageForm.value.services[i].serviceImageUrl[0]?.eachimage"
+                    >
                       
                         <div class="eachimage m-3 position-relative" *ngFor="let eachimag of landingPageForm.
                         value.services[i].serviceImageUrl; let j = index; "
                          >
                             <img [src]="eachimag.eachimage" alt="" width="100" height="100">
-                            <div (click)="reveal('deleteDialog', j)" 
+                            <div (click)="reveal('deleteDialog', j, i)" 
                             class="tr text-danger rounded-circle position-absolute mt-n2 top-0 end-0 d-flex justify-content-center align-items-center">
                                 x
                             </div>
@@ -91,7 +92,7 @@
                         <div class="visit position-absolute bottom-0  mb-5 w-auto end-2 bg-secondary text-light p-2 d-none">
                           Click to see this image in another tab.
                         </div>
-                        <div class="deleteDialog position-fixed d-flex justify-content-center align-items-center" *ngIf="show.deleteDialog[j]">
+                        <div class="deleteDialog position-fixed d-flex justify-content-center align-items-center" *ngIf="show.deleteDialog[i][j]">
                           <div class="p-3">
                            <div class="card">
                              <div class="card-header text-danger">
@@ -105,10 +106,10 @@
                                 <img [src]="eachimag.eachimage" alt="" width="100" height="100">
                                </div>
                                <div class="gp d-flex justify-content-end align-items-center">
-                                 <div class="btn btn-secondary mr-2" (click)="hide('deleteDialog', j)">
+                                 <div class="btn btn-secondary mr-2" (click)="hide('deleteDialog', j, i)">
                                    Cancel
                                  </div>
-                                 <div class="btn btn-danger mr-3"  (click)="delete(geteachimage(i), j, 'deleteDialog', 'eachimage')">
+                                 <div class="btn btn-danger mr-3"  (click)="delete(geteachimage(i), j, 'deleteDialog', 'eachimage', i)">
                                    Delete
                                  </div>
                                </div>
@@ -124,19 +125,21 @@
 
         <div class="eachinput my-3 p-2">        
             <label >
-                Service/Product Description
+              {{landingPageForm.value.services[i].serviceTitle?'Service/Product Description for "'+landingPageForm.value.services[i].serviceTitle+'"':'Service/Product Description'}}
+                    
               </label>
               <span class="alaye my-2">
                   Describe The Service or The Product
               </span>
 
               <div  class="eachinput my-3 p-2" id="{{'description'+i}}">
-                <ckeditor [editor]="Editor" (change)="onChange($event, i)" data="<p>We Offer .....</p>" (ready)="onReady($event)"></ckeditor>
+                <ckeditor [editor]="Editor" (change)="onChange($event, i)" [data]='sections.controls[i].get("serviceDescription")?sections.controls[i].get("serviceDescription")!.value!:"We Offer ....."' (ready)="onReady($event)"></ckeditor>
               </div>
         </div>
         <div class="eachinput my-3 p-2">
           <label for="{{'serviceprice'+i}}"> 
-            Service/Product Price
+            {{landingPageForm.value.services[i].serviceTitle?'Service/Product Price for "'+landingPageForm.value.services[i].serviceTitle+'"':'Service/Product Price'}}
+                    
           </label>
           <span class="alaye my-2">
             Enter the Price of the Service or the Product<br>
@@ -223,8 +226,22 @@
       
     
       </div> -->
+      <input type="submit" value="Submit" (click)="save();"
+      class="btn mt-4 d-block w-50 btn-danger text-light">
     </form>
     
       </div>
     </div>
   </mat-expansion-panel>
+
+  <div *ngIf="alertMessage" class="p-3 zindex d-flex position-fixed w-100 h-100 start-0 top-0 justify-content-center align-items-center">
+    <div class="p-3 w-80 w-lg-50 bg-light position-relative insidezindex" [ngClass]="{
+      'text-danger': typeOfMessage == 'error',
+      'text-success': typeOfMessage == 'success'
+    }">
+      {{alertMessage}}
+      <div class="position-absolute top-0 end-0 pe-2 text-danger" (click)="closeMessage()">
+        <i class="fas fa-times"></i>
+      </div>
+    </div>
+    </div>

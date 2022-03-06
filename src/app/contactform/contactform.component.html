@@ -1,0 +1,157 @@
+<mat-expansion-panel class="py-3" [expanded]="expand">
+    <mat-expansion-panel-header class="pt-1 pb-2">
+      <mat-panel-title>
+        Contact
+      </mat-panel-title>
+      <mat-panel-description>
+        Enter Your Contact Information
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+  <div class="card">
+      <div class="card-header text-secondary">
+        Contact Form
+      </div>
+      <div class="card-body" >
+        <form novalidate [formGroup]="landingPageForm" >
+          
+            
+                
+  
+        <div class="eachinput my-3 p-2">        
+            <label for="ceo">
+                Name of the C.E.O.
+              </label>
+              <span class="alaye my-2">
+                Enter the name of the C.E.O. of your business
+                </span>
+              <mat-form-field appearance="fill">
+                <mat-label>Name of the C.E.O.</mat-label>
+                <input id="ceo" type="text" matInput formControlName="ceoName">
+              </mat-form-field>
+    
+        </div>
+        <div class="eachinput my-3 p-2">        
+            <label for="phone">
+                Business Phone Number
+              </label>
+              <span class="alaye my-2">
+                Enter the phone number of your business 
+                </span>
+              <mat-form-field appearance="fill">
+                <mat-label>Business Phone Number</mat-label>
+                <input id="phone" type="text" matInput formControlName="businessPhonenumber">
+              </mat-form-field>
+    
+        </div>
+        <div class="eachinput my-3 p-2">        
+            <label for="email">
+                Business Email
+              </label>
+              <span class="alaye my-2">
+                Enter the email of your business
+                </span>
+              <mat-form-field appearance="fill">
+                <mat-label>Business Email</mat-label>
+                <input id="email" type="text" matInput formControlName="businessEmail">
+                <div class="text-danger"
+                *ngIf="landingPageForm.get('email')!.errors?.email">
+                Please Enter Correct Email
+            </div>
+              </mat-form-field>
+    
+        </div>
+
+        
+        <div class="eachinput my-3 p-2"> 
+            <div *ngIf="!questionanswered">
+                <div>
+                Do you have a Facebook Page?
+            </div> 
+            <div class="d-flex justify-content-end pe-3">
+                <div class="btn btn-info me-2" click="answer('yes')">Yes</div>
+                <div class="btn btn-danger" (click)="answer('no')">No</div>
+            </div>
+            </div>  
+            <div *ngIf="pageyes">     
+            <label for="fbpageurl">
+                Facebook Page Url
+              </label>
+              <span class="alaye my-2">
+                Enter the url of your facebook Page <br>
+                <span class="info">
+                    Facebook Page Url
+                </span>
+                <span class="bg-secondary rounded p-2 text-light"
+                (click)="showhint('facebook')">
+                    What is Facebook Page Url ?
+                </span>
+                </span>
+              <mat-form-field appearance="fill">
+                <mat-label>Facebook Page Url</mat-label>
+                <input id="fbpageurl" type="text" matInput formControlName="facebookPageUrl">
+              
+              </mat-form-field>
+              </div>
+    
+        </div>
+       <!-- <div>
+
+           ceoName: '',
+        businessPhonenumber:'',
+        businessEmail:'',
+        facebookPageUrl:'',
+        businessWhatsapp:'',
+        twitterUrl:'',
+        linkedinUrl:'',
+        instagramUrl:''
+  
+       </div>-->
+  
+  
+        
+       
+  
+        
+                
+  
+  
+            
+          
+  
+        
+  
+      
+  <div *ngIf="activateOverlay" class="position-fixed overlayi w-100 h-100 justify-content-center align-items-center">
+  
+  </div>
+      <input type="submit" value="Submit" (click)="save();"
+      class="btn mt-4 d-block w-50 btn-danger text-light">
+    </form>
+    
+      </div>
+    </div>
+  </mat-expansion-panel>
+  
+  <div *ngIf="alertMessage" class="p-3 zindex d-flex position-fixed w-100 h-100 start-0 top-0 justify-content-center align-items-center">
+    <div class="p-3 w-80 w-lg-50 bg-light position-relative insidezindex" [ngClass]="{
+      'text-danger': typeOfMessage == 'error',
+      'text-success': typeOfMessage == 'success'
+    }">
+      {{alertMessage}}
+      <div class="position-absolute top-0 end-0 pe-2 text-danger" (click)="closeMessage()">
+        <i class="fas fa-times"></i>
+      </div>
+    </div>
+    </div>
+    <div class="hint z-index hint-facebook fixed w-lg-80 w-95 h-80 h-lg-80"
+    *ngIf="hint.facebook">
+            Facebook Page Url is the url address of your facebook page.
+            To get this, go to your facebook page with your browser (chrome, firefox, e.t.c.);
+            Copy all what is in the address bar (the place in the browser where you type "google.com" to go to google)
+            and paste it here.
+            <div>
+                <picture>
+                    <source>s
+                </picture>
+            </div>  
+    </div>

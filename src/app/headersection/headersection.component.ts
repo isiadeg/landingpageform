@@ -5,6 +5,7 @@ import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import { MyUploadAdapter } from '../uploader';
 import {FormBuilder, FormGroup, FormArray, FormControl, AbstractControl} from '@angular/forms'
 
+
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
@@ -29,8 +30,11 @@ const analytics = getAnalytics(app);
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { NumberSymbol } from '@angular/common';
 import {MatDialogRef, MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
-
+import { debounceTime } from 'rxjs/operators';
+import {getDatabase, ref as ref2, set} from "firebase/database";
+import { LoginService } from '../login.service';
 const storage = getStorage();
+const db =getDatabase();
 
 // Create the file metadata
 
@@ -67,20 +71,57 @@ export class HeadersectionComponent implements OnInit {
   activateOverlay:boolean = false;
   dialogref!:MatDialogRef<any>;
   @Input() expand = false;
-   
+  alertMessage:string = "";
+  typeOfMessage:string ="";
+   @Input() data:any;
 
 
   get sections():FormArray{
     return<FormArray>this.landingPageForm.get('headerImages');
   }
   //eachsection: FormGroup = new FormGroup({});
-  constructor(private fb:FormBuilder, private dialog:MatDialog) { }
+  constructor(private fb:FormBuilder, private dialog:MatDialog,
+    private loginservice:LoginService) { }
 
   ngOnInit(): void {
     this.landingPageForm = this.fb.group({
       businessName : '',
       logoUrl: '',
       headerImages: this.fb.array([this.createFormgroup(['headerImage'])])
+    })
+    if(this.data){
+      console.log(this.data);
+      this.landingPageForm.patchValue({
+        businessName: this.data.businessName,
+        logoUrl: this.data.logoUrl,
+        
+      })
+      if(this.data.headerImages){
+        this.data.headerImages.forEach((e:any, index:any)=>{
+          if(index == 0){
+            this.sections.controls[0].get('headerImage')!.setValue(e['headerImage']);
+            
+            
+
+          }else{
+            this.sections.push(this.fb.group({
+              'headerImage': e['headerImage']
+            }))
+
+          }
+        })
+              }
+this.landingPageForm.updateValueAndValidity();
+    }
+    this.landingPageForm.valueChanges.pipe(debounceTime(4000)).subscribe((e:any)=>{
+      set(ref2(db,'users/'+this.loginservice.user+"/"+'header'), {
+        ...this.landingPageForm.value
+      }).then(()=>{
+        console.log("data has been saved")
+      }).catch(e=>{
+        console.log(`An error occured in saving your form. Check your
+        network`)
+      })
     })
   }
 
@@ -215,6 +256,29 @@ hide(ele:string, i:number){
   this.show[ele][i] = false;
   this.activateOverlay = false;
 }
+save(){
+  set(ref2(db,'users/'+this.loginservice.user+"/"+'header'), {
+    ...this.landingPageForm.value
+  }).then(()=>{
+    this.activateOverlay = true;
+    this.alertMessage = "Your Header Information has been saved Successfully"
+    this.typeOfMessage = "success";
+    console.log("data has been saved")
+  }).catch(e=>{
+    this.activateOverlay = true;
+    this.alertMessage = `An error occured in saving your form. Check your
+    network`
+    this.typeOfMessage = "error";
+    console.log(`An error occured in saving your form. Check your
+    network`)
+  })
+}
+
+closeMessage(){
+  this.alertMessage = "";
+  this.activateOverlay = false;
+}
+
 opendialog(){
     this.dialogref= this.dialog.open(DialogComp, {data:{
       bigsrc: "https://firebasestorage.googleapis.com/v0/b/functions-landingpage.appspot.com/o/images%2Ffunctionscollege.web.app_(big%20laptop)%20(2).png?alt=media&token=0961e02a-682a-41c5-a2fa-0225af1ea92f",
@@ -223,6 +287,7 @@ opendialog(){
 }
 
 }
+
 
 @Component({
   templateUrl: '../dialog/dialog.component.html',

@@ -1,5 +1,5 @@
-<mat-expansion-panel class="py-4" [expanded]="expand">
-  <mat-expansion-panel-header >
+<mat-expansion-panel class="py-3" [expanded]="expand">
+  <mat-expansion-panel-header class="pt-1 pb-2" >
     <mat-panel-title>
       Header Section Form
     </mat-panel-title>
@@ -161,8 +161,21 @@
     
   
     </div> -->
+    <input type="submit" value="Submit" class="btn btn-danger text-light"
+    (click)="save();">
   </form>
   
     </div>
   </div>
 </mat-expansion-panel>
+<div *ngIf="alertMessage" class="p-3 zindex d-flex position-fixed w-100 h-100 start-0 top-0 justify-content-center align-items-center">
+<div class="p-3 w-80 w-lg-50 bg-light position-relative insidezindex" [ngClass]="{
+  'text-danger': typeOfMessage == 'error',
+  'text-success': typeOfMessage == 'success'
+}">
+  {{alertMessage}}
+  <div class="position-absolute top-0 end-0 pe-2 text-danger" (click)="closeMessage()">
+    <i class="fas fa-times"></i>
+  </div>
+</div>
+</div>

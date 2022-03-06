@@ -30,13 +30,13 @@ label{
 .rounded-circle{
     width:25px; height:25px;
 }
+label{
+    color: pink;
+}
 .deleteDialog{
     z-index: 1000000000000000000;
     top:0px; left:0px; width:100%; height: 100%;
     box-sizing: border-box;
-}
-label{
-    color:pink;
 }
 .overlayi{
     z-index: 1000000000;
@@ -51,6 +51,9 @@ label{
 .gp{
     gap:15px;
 }
+.mat-expansion-panel-body{
+    padding: 15px;
+}
 .zindex{
     z-index:22222222222222222;
     }
@@ -63,6 +66,7 @@ label{
 }
 @media only screen and (min-width:1024px){
     .card{
-        
+        width:85%;
+        margin: auto;
     }
 }

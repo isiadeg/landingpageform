@@ -23,6 +23,7 @@ export class LoginService {
         // https://firebase.google.com/docs/reference/js/firebase.User
         const uid = user.uid;
         userUid = uid;
+        this.user = uid;
         // ...
         console.log(uid);
         if(this.url){
@@ -36,6 +37,8 @@ export class LoginService {
         // User is signed out
         // ...
         userUid = null;
+        this.user = userUid;
+        this.router.navigate(['/login'])
       }
     });
 
@@ -72,7 +75,7 @@ export class LoginService {
     // Signed in 
     const user = userCredential.user; 
     console.log(userUid)
-    this.router.navigate(['/user', userUid])
+    //this.router.navigate(['/user', userUid])
 
     // ...
   })

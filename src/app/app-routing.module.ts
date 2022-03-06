@@ -6,9 +6,11 @@ import {UsersComponent} from './users/users.component';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {LoginGuard} from './login.guard';
+import { UserresolverService } from './userresolver.service';
 
 const routes: Routes = [{
-  path: 'user/:id', component: UserComponent, canActivate:[LoginGuard]
+  path: 'user/:id', component: UserComponent, canActivate:[LoginGuard], 
+  resolve: {forms:UserresolverService}
 },
 {
   path: 'login', component: LoginComponent

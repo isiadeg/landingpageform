@@ -16,6 +16,9 @@ import { ServicesComponent } from './services/services.component';
 import { ServicedialogComponent } from './servicedialog/servicedialog.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { WhyusComponent } from './whyus/whyus.component';
+import { ContactformComponent } from './contactform/contactform.component';
+import { ContactdialogComponent } from './contactdialog/contactdialog.component';
 
 
 @NgModule({
@@ -29,7 +32,10 @@ import { RegisterComponent } from './register/register.component';
     ServicesComponent,
     ServicedialogComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    WhyusComponent,
+    ContactformComponent,
+    ContactdialogComponent
   ],
   imports: [
     BrowserModule,
